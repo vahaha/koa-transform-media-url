@@ -2,8 +2,8 @@ const Promise = require('bluebird')
 const _ = require('lodash')
 const transformer = require('./lib/transformer')
 
-exports.init = async function init(getDomainList) {
-    return transformer.init(getDomainList)
+exports.init = async function init(fnGetBaseUrlList) {
+    return transformer.init(fnGetBaseUrlList)
 }
 
 exports.transformRequest = (validFields = [], fnGetIdByPath) => async (ctx, next) => {
