@@ -1,0 +1,48 @@
+{
+  "name": "@vahaha/koa-transform-media-url",
+  "version": "1.0.0",
+  "description": "Transform media url between url and id",
+  "repository": "https://github.com/vahaha/koa-transform-media-url",
+  "author": "Viet Anh Do <dovietanh.th@gmail.com>",
+  "license": "MIT",
+  "main": "index.js",
+  "keywords": [
+    "koa",
+    "transform media url"
+  ],
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.1.0",
+    "babel-jest": "^29.7.0",
+    "babel-plugin-rewire": "^1.2.0",
+    "eslint": "7.14.0",
+    "eslint-plugin-jest": "^27.4.0",
+    "eslint-plugin-prettier": "3.1.4",
+    "husky": "^4.3.8",
+    "jest": "^29.7.0",
+    "lint-staged": "10.0.7",
+    "nodemon": "^2.0.20",
+    "prettier": "2.2.0",
+    "rewire": "^7.0.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "lodash": "^4.17.21",
+    "mongoose": "^7.5.2",
+    "node-cache": "^5.1.2",
+    "uuid": "^9.0.1"
+  }
+}

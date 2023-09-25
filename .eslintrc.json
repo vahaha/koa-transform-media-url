@@ -1,0 +1,44 @@
+{
+    "env": {
+        "es2020": true,
+        "node": true,
+        "jest": true
+    },
+    "extends": "eslint:recommended",
+    "plugins": ["prettier", "jest"],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module"
+    },
+    "rules": {
+        "no-empty": 0,
+        "arrow-parens": ["error", "as-needed"],
+        "no-unused-vars": [
+            "warn",
+            { "args": "after-used", "argsIgnorePattern": "^_|err" }
+        ],
+        "no-case-declarations": "off",
+        "no-async-promise-executor": "warn",
+        "comma-dangle": [
+            "error", "always-multiline"
+        ],
+        "no-const-assign": "error",
+        "prefer-const": ["error", { "destructuring": "all" }],
+        "no-undef": "warn",
+        "no-redeclare": ["off", { "builtinGlobals": true }],
+        "linebreak-style": ["error", "unix"],
+        "quotes": ["error", "single", { "avoidEscape": true }],
+        "semi": ["error", "never"],
+        "no-console": [
+            "off",
+            {
+                "allow": ["warn", "error", "info", "debug"]
+            }
+        ],
+        "no-mixed-spaces-and-tabs": "off"
+    }
+  }
