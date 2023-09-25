@@ -2,7 +2,10 @@
   "name": "@vahaha/koa-transform-media-url",
   "version": "1.0.0",
   "description": "Transform media url between url and id",
-  "repository": "https://github.com/vahaha/koa-transform-media-url",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vahaha/koa-transform-media-url.git"
+  },
   "author": "Viet Anh Do <dovietanh.th@gmail.com>",
   "license": "MIT",
   "main": "index.js",
@@ -44,5 +47,12 @@
     "mongoose": "^7.5.2",
     "node-cache": "^5.1.2",
     "uuid": "^9.0.1"
+  },
+  "bugs": {
+    "url": "https://github.com/vahaha/koa-transform-media-url/issues"
+  },
+  "homepage": "https://github.com/vahaha/koa-transform-media-url#readme",
+  "directories": {
+    "lib": "lib"
   }
 }
