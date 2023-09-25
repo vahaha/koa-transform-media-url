@@ -56,7 +56,7 @@ describe('Transform between url and id', () => {
         const getAndCacheMapping = require('../../lib/transformer').__get__('getAndCacheMapping')
 
         test('Get id by url', async () => {
-            await require('../../lib/transformer').init(() => [S3_DOMAIN_LIST])
+            await require('../../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const expectedResult = {}
             const expectedCachedUrls = []
             paths.forEach((path, idx) => {
@@ -72,7 +72,7 @@ describe('Transform between url and id', () => {
         })
 
         test('Signed by id', async () => {
-            await require('../../lib/transformer').init(() => [S3_DOMAIN_LIST])
+            await require('../../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const expectedResult = {}
             const expectedCachedUrls = []
             mediaIds.forEach((path, idx) => {
@@ -92,7 +92,7 @@ describe('Transform between url and id', () => {
         const detectIdFromContent = require('../../lib/transformer').__get__('detectIdFromContent')
 
         test('Match one id', async () => {
-            await require('../../lib/transformer').init(() => [S3_DOMAIN_LIST])
+            await require('../../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const id = mediaIds[0]
             const link = `${MEDIA_ID_PREFIX}//${id}`
             const content = `<img src="${link}"/>`
@@ -108,7 +108,7 @@ describe('Transform between url and id', () => {
         })
 
         test('Match many id', async () => {
-            await require('../../lib/transformer').init(() => [S3_DOMAIN_LIST])
+            await require('../../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const links = mediaIds.map(id => `${MEDIA_ID_PREFIX}//${id}`)
             const content = links
                 .map(
@@ -139,7 +139,7 @@ describe('Transform between url and id', () => {
         )
 
         test('Match one url', async () => {
-            await require('../../lib/transformer').init(() => [S3_DOMAIN_LIST])
+            await require('../../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const path = paths[0]
             const link = `${S3_DOMAIN_LIST}/${tid}/${path}`
             const content = `<img src="${link}"/>`
@@ -155,7 +155,7 @@ describe('Transform between url and id', () => {
         })
 
         test('Match many url', async () => {
-            await require('../../lib/transformer').init(() => [S3_DOMAIN_LIST])
+            await require('../../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const links = paths.map(path => `${S3_DOMAIN_LIST}/${tid}/${path}`)
             const content = links
                 .map(
@@ -184,7 +184,7 @@ describe('Transform between url and id', () => {
         const transformIdToUrlInContent = require('../../lib/transformer').transformIdToUrlInContent
 
         test("It's worked", async () => {
-            await require('../../lib/transformer').init(() => [S3_DOMAIN_LIST])
+            await require('../../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const result = await transformIdToUrlInContent(tid, responseContent, fnGetSignedUrlById)
 
             expect(result).toBe(expectedResultResponseContent)
@@ -195,7 +195,7 @@ describe('Transform between url and id', () => {
         const transformUrlToIdInContent = require('../../lib/transformer').transformUrlToIdInContent
 
         test("It's worked", async () => {
-            await require('../../lib/transformer').init(() => [S3_DOMAIN_LIST])
+            await require('../../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const result = await transformUrlToIdInContent(tid, requestContent, fnGetIdByPath)
 
             expect(result).toBe(expectedResultRequestContent)
@@ -207,7 +207,7 @@ describe('Transform between url and id', () => {
             .transformIdAsFieldValueToUrl
 
         test("It's worked", async () => {
-            await require('../../lib/transformer').init(() => [S3_DOMAIN_LIST])
+            await require('../../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const result = await transformIdAsFieldValueToUrl(
                 tid,
                 hashedUrls[0],
@@ -223,7 +223,7 @@ describe('Transform between url and id', () => {
             .transformUrlAsFieldValueToId
 
         test("It's worked", async () => {
-            await require('../../lib/transformer').init(() => [S3_DOMAIN_LIST])
+            await require('../../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const result = await transformUrlAsFieldValueToId(tid, realUrls[0], fnGetIdByPath)
 
             expect(result).toBe(hashedUrls[0])

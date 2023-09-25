@@ -2,16 +2,16 @@ const Promise = require('bluebird')
 const _ = require('lodash')
 const transformer = require('./lib/transformer')
 
-exports.init = async function init(fnGetBaseUrlList) {
-    return transformer.init(fnGetBaseUrlList)
+exports.init = async function init({ fnGetBaseUrls, fnGetUrlById, fnGetIdByPath }) {
+    return transformer.init({ fnGetBaseUrls, fnGetUrlById, fnGetIdByPath })
 }
 
-exports.transformRequest = (validFields = [], fnGetIdByPath) => async (ctx, next) => {
+exports.transformRequest = ({ requestFields = [], fnGetIdByPaths }) => async (ctx, next) => {
     const { tid } = ctx.state.user
     const entity = ctx.request.body
     const root = 'entity'
 
-    const matchedFields = transformer.scanMediaUrls(entity, root, null, validFields)
+    const matchedFields = transformer.scanMediaUrls(entity, root, null, requestFields)
     const paths = Object.keys(matchedFields)
 
     if (paths.length) {
@@ -21,12 +21,12 @@ exports.transformRequest = (validFields = [], fnGetIdByPath) => async (ctx, next
                 matchedFields[path] = await transformer.transformUrlToIdInContent(
                     tid,
                     matchedFields[path],
-                    fnGetIdByPath,
+                    fnGetIdByPaths,
                 )
                 matchedFields[path] = await transformer.transformUrlAsFieldValueToId(
                     tid,
                     matchedFields[path],
-                    fnGetIdByPath,
+                    fnGetIdByPaths,
                 )
             },
             { concurrency: 1 },
@@ -40,7 +40,7 @@ exports.transformRequest = (validFields = [], fnGetIdByPath) => async (ctx, next
     return next()
 }
 
-exports.transformResponse = (validFields = [], fnGetSignedUrlById) => async (ctx, next) => {
+exports.transformResponse = ({ responseFields = [], fnGetUrlByIds }) => async (ctx, next) => {
     const { tid } = ctx.state.user
 
     await Promise.resolve(next())
@@ -48,7 +48,7 @@ exports.transformResponse = (validFields = [], fnGetSignedUrlById) => async (ctx
     const entity = ctx.body
     const root = 'entity'
 
-    const matchedFields = transformer.scanMediaIds(entity, root, null, validFields)
+    const matchedFields = transformer.scanMediaIds(entity, root, null, responseFields)
     const paths = Object.keys(matchedFields)
 
     if (paths.length) {
@@ -58,12 +58,12 @@ exports.transformResponse = (validFields = [], fnGetSignedUrlById) => async (ctx
                 matchedFields[path] = await transformer.transformIdToUrlInContent(
                     tid,
                     matchedFields[path],
-                    fnGetSignedUrlById,
+                    fnGetUrlByIds,
                 )
                 matchedFields[path] = await transformer.transformIdAsFieldValueToUrl(
                     tid,
                     matchedFields[path],
-                    fnGetSignedUrlById,
+                    fnGetUrlByIds,
                 )
             },
             { concurrency: 1 },
@@ -75,7 +75,12 @@ exports.transformResponse = (validFields = [], fnGetSignedUrlById) => async (ctx
     }
 }
 
-exports.transformBoth = (requestFields, responseFields) => async (ctx, next) => {
-    this.transformRequest(requestFields)(ctx, next)
-    this.transformResponse(responseFields)(ctx, next)
+exports.transformBoth = ({
+    requestFields = [],
+    responseFields = [],
+    fnGetIdByPaths,
+    fnGetUrlByIds,
+}) => async (ctx, next) => {
+    this.transformRequest({ requestFields, fnGetIdByPaths })(ctx, next)
+    this.transformResponse({ responseFields, fnGetUrlByIds })(ctx, next)
 }
