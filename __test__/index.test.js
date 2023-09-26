@@ -34,6 +34,10 @@ function fnGetUrlByIds(tid, arrId) {
     return arrId.map(id => mappingIdToRealUrl[id])
 }
 
+beforeAll(async () => {
+    await require('../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
+})
+
 describe('Transform request & response', () => {
     const hashedUrls = fnGetIdByPaths(tid, paths)
     const realUrls = fnGetUrlByIds(tid, mediaIds)
@@ -55,7 +59,6 @@ describe('Transform request & response', () => {
 
     describe('Transform request body', () => {
         test('Url in content', async () => {
-            await require('../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const ctx = {
                 state: { user: { tid } },
                 request: { body: { content: requestContent } },
@@ -71,7 +74,6 @@ describe('Transform request & response', () => {
         })
 
         test('Url as field value', async () => {
-            await require('../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const ctx = {
                 state: { user: { tid } },
                 request: { body: { content: realUrls[0] } },
@@ -87,7 +89,6 @@ describe('Transform request & response', () => {
         })
 
         test('Url in content and be as field value', async () => {
-            await require('../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const ctx = {
                 state: { user: { tid } },
                 request: {
@@ -108,7 +109,6 @@ describe('Transform request & response', () => {
 
     describe('Transform response body', () => {
         test('Url in content', async () => {
-            await require('../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const ctx = {
                 state: { user: { tid } },
             }
@@ -125,7 +125,6 @@ describe('Transform request & response', () => {
         })
 
         test('Url as field value', async () => {
-            await require('../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const ctx = {
                 state: { user: { tid } },
             }
@@ -142,7 +141,6 @@ describe('Transform request & response', () => {
         })
 
         test('Url in content and be as a field value', async () => {
-            await require('../lib/transformer').init({ fnGetBaseUrls: () => [S3_DOMAIN_LIST] })
             const ctx = {
                 state: { user: { tid } },
             }
