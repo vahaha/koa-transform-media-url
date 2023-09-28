@@ -1,6 +1,6 @@
 {
   "name": "@vahaha/koa-transform-media-url",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Transform media url between url and id",
   "repository": {
     "type": "git",

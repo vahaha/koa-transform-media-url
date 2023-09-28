@@ -13,14 +13,26 @@ npm install @vahaha/koa-transform-media-url
 
 #### Setting
 
-The first setting is called onetime when start programming.
+The first setting is called once time when start programming.
 
 ```
-function fnGetBaseUrlList() {
-    return ['https://s3.amazonaws.com/package-name', 'https://cdn.example.com/]
+function fnGetBaseUrls() {
+    return [
+        'https://s3.amazonaws.com/package-name',
+        'https://cdn.example.com'
+    ]
 }
 
-require('@vahaha/koa-transform-media-url').init(fnGetBaseUrlList) // init is a async function.
+function fnGetUrlById(ids = []) {
+    return ids.map(id => 'https://s3.amazonaws.com/bucket-name/' + id + '.jpg')
+}
+
+function fnGetIdByPath(paths = []) {
+    return paths.map(path => path.replace('.jpg', ''))
+}
+
+require('@vahaha/koa-transform-media-url')
+    .init({ fnGetBaseUrls, fnGetUrlById, fnGetIdByPath }) // init is a async function.
 
 ```
 
@@ -56,8 +68,8 @@ ex: Transform request (body)
 --------------------------------
 input:
 {
-    fieldName: 'https://s3.amazonaws.com/package-name/e4630b7d-18c2-4d87-adb7-5e7dccc5d633/image/0d64132a-d58a-48f7-907f-0fd93a4a0bff.jpg',
-    urlInContent: 'Example image <img src="http://s3.amazonaws.com/package-name/e4630b7d-18c2-4d87-adb7-5e7dccc5d633/image/0d64132a-d58a-48f7-907f-0fd93a4a0bff.jpg">',
+    fieldName: 'https://s3.amazonaws.com/bucket-name/e4630b7d-18c2-4d87-adb7-5e7dccc5d633/image/0d64132a-d58a-48f7-907f-0fd93a4a0bff.jpg',
+    urlInContent: 'Example image <img src="http://s3.amazonaws.com/bucket-name/e4630b7d-18c2-4d87-adb7-5e7dccc5d633/image/0d64132a-d58a-48f7-907f-0fd93a4a0bff.jpg">',
     otherField: 'value'
 }
 
@@ -79,8 +91,8 @@ input:
 
 output:
 {
-    link: 'https://s3.amazonaws.com/package-name/e4630b7d-18c2-4d87-adb7-5e7dccc5d633/image/0d64132a-d58a-48f7-907f-0fd93a4a0bff.jpg',
-    urlInContent: 'Example image <img src="http://s3.amazonaws.com/package-name/e4630b7d-18c2-4d87-adb7-5e7dccc5d633/image/0d64132a-d58a-48f7-907f-0fd93a4a0bff.jpg">',
+    link: 'https://s3.amazonaws.com/bucket-name/e4630b7d-18c2-4d87-adb7-5e7dccc5d633/image/0d64132a-d58a-48f7-907f-0fd93a4a0bff.jpg',
+    urlInContent: 'Example image <img src="http://s3.amazonaws.com/bucket-name/e4630b7d-18c2-4d87-adb7-5e7dccc5d633/image/0d64132a-d58a-48f7-907f-0fd93a4a0bff.jpg">',
     otherField: 'value'
 }
 */
